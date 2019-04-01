@@ -21,25 +21,25 @@ num_of_samples = []
 
 cols = 5
 num_classes = 10 # 0 ~ 9
-#
-# fig, axs = plt.subplots(nrows=num_classes, ncols=cols, figsize=(5, 10))
-# fig.tight_layout() # overlap 해결
-# for i in range(cols):
-#     for j in range(num_classes):
-#         x_selected = X_train[Y_train == j]
-#         axs[j][i].imshow(x_selected[random.randint(0, len(x_selected - 1)), : , :], cmap=plt.get_cmap("gray"))
-#         axs[j][i].axis("off")
-#         if i == 2:
-#             axs[j][i].set_title(str(j))
-#             num_of_samples.append(len(x_selected))
-#
-# plt.show()
-# plt.figure(figsize=(12, 4))
-# plt.bar(range(0, num_classes), num_of_samples)
-# plt.title("Distribution of the training dataset")
-# plt.xlabel("Class number")
-# plt.ylabel("Number of images")
-# plt.show()
+
+fig, axs = plt.subplots(nrows=num_classes, ncols=cols, figsize=(5, 10))
+fig.tight_layout() # overlap 해결
+for i in range(cols):
+    for j in range(num_classes):
+        x_selected = X_train[Y_train == j]
+        axs[j][i].imshow(x_selected[random.randint(0, len(x_selected - 1)), : , :], cmap=plt.get_cmap("gray"))
+        axs[j][i].axis("off")
+        if i == 2:
+            axs[j][i].set_title(str(j))
+            num_of_samples.append(len(x_selected))
+
+plt.show()
+plt.figure(figsize=(12, 4))
+plt.bar(range(0, num_classes), num_of_samples)
+plt.title("Distribution of the training dataset")
+plt.xlabel("Class number")
+plt.ylabel("Number of images")
+plt.show()
 
 Y_train = to_categorical(Y_train, 10)
 Y_test = to_categorical(Y_test, 10)
@@ -49,7 +49,7 @@ X_test = X_test/255
 
 # 28 X 28 의 2-dimension 을 784의 1-dimansion 으로 바꿔야한다
 num_pixels = 784
-X_train = X_train.reshape(X_train.shape[0], num_pixels)
+X_train = X_train.reshape(X_train.shape[0], num_pixels) # 60000, 28, 28
 X_test = X_test.reshape(X_test.shape[0], num_pixels)
 
 def create_model():
@@ -83,6 +83,7 @@ plt.show()
 
 score = model.evaluate(X_test, Y_test, verbose=0)
 print("Test score", score[0])
+# Score is the evaluation of the loss function for a given input.
 print("Test accuracy", score[1])
 
 # GET image on web and cal
@@ -102,8 +103,8 @@ resized = cv2.resize(img_array, (28, 28))
 #(28, 28, 4) => (28, 28)
 gray_scale= cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
 image = cv2.bitwise_not(gray_scale)
-# plt.imshow(image, cmap=plt.get_cmap("gray"))
-# plt.show()
+plt.imshow(image, cmap=plt.get_cmap("gray"))
+plt.show()
 
 # nomalization
 image = image/255
